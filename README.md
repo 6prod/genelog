@@ -19,7 +19,7 @@ Small (200 loc) and composable logger with context, hooks and formatter.
 ## Usage
 ### Basic
 ```go
-logger := New(&buf).
+logger := New(os.Stdout).
   WithFormatter(func(context interface{}, msg string) (string, error) {
     return msg, nil
   })
