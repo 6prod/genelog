@@ -1,5 +1,7 @@
 # genelog
 
+[![godoc](http://img.shields.io/badge/godoc-reference-blue.svg?style=flat)](https://godoc.org/github.com/6prod/genelog) [![license](http://img.shields.io/badge/license-MIT-red.svg?style=flat)](https://raw.githubusercontent.com/6prod/genelog/master/LICENSE)
+
 Small (200 loc) and composable logger with context, hooks and formatter.
 
 ## Features
