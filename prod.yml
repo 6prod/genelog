@@ -11,10 +11,13 @@ jobs:
   ci/lint/staticcheck:
     description: "Run staticcheck"
 
+  ci/lint/golangci-lint:
+    description: "Run golangci-lint"
+
   lint:
     description: "Run static code analysis"
     job:
-      - {from: [ci/lint/vet, ci/lint/staticcheck]}
+      - {from: [ci/lint/vet, ci/lint/staticcheck, ci/lint/golangci-lint]}
 
   default:
     job:

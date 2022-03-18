@@ -3,7 +3,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-if ! command staticcheck; then
+if ! command -v staticcheck &>/dev/null; then
   go install honnef.co/go/tools/cmd/staticcheck@latest
 fi
 

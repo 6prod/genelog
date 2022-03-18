@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -o errexit
+set -o nounset
+set -o pipefail
+
+PATH="$PATH:$GOPATH/bin"
+
+if ! command -v golangci-lint &>/dev/null; then
+  go install github.com/golangci/golangci-lint/cmd/golangci-lint
+fi
+
+golangci-lint run ./...
+echo "done"
+
