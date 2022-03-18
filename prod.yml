@@ -5,6 +5,14 @@ jobs:
   ci/bench:
     description: "Run benchmark test"
 
+  ci/vet:
+    description: "Run go vet"
+
+  lint:
+    description: "Run static code analysis"
+    job:
+      - {from: [ci/vet]}
+
   default:
     job:
-      - {from: [ci/unit]}
+      - {from: [lint], to: [ci/unit]}
