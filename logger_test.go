@@ -49,7 +49,7 @@ func updateContext(update func(Context) Context) Update {
 	}
 }
 
-func ExampleHook_Context() {
+func ExampleHook_context() {
 	buf := bytes.Buffer{}
 
 	context := Context{}
@@ -79,7 +79,7 @@ func ExampleHook_Context() {
 	// A 1 mylog
 }
 
-func ExampleHook_ContextUpdateTime() {
+func ExampleHook_contextUpdateTime() {
 	var context time.Time = time.Date(2021, 2, 1, 12, 30, 0, 0, time.UTC)
 
 	hookUpdateTime := func(v interface{}, msg string) (interface{}, string, error) {
@@ -116,7 +116,7 @@ func ExampleHook_ContextUpdateTime() {
 
 // Write to the io.Writer of the logger with no format
 // and to console using a hook
-func ExampleHook_MultiFormatter() {
+func ExampleHook_multiFormatter() {
 	var context string
 
 	// To replace with os.Stdout
