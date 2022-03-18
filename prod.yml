@@ -1,0 +1,10 @@
+jobs:
+  ci/unit:
+    description: "Run unit test"
+
+  ci/bench:
+    description: "Run benchmark test"
+
+  default:
+    job:
+      - {from: [ci/unit]}

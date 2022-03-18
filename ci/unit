@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -o errexit
+set -o nounset
+set -o pipefail
+
+pwd
+min_coverage="15"
+coverpath="out/coverage.out"
+coverhtmlpath="out/coverage.html"
+
+echo "> Running unit test with code coverage..."
+mkdir -p out/
+CGO_ENABLED=1 go test -coverprofile="$coverpath" ./...
+
+echo "> Generating code coverage report..."
+go tool cover -html="$coverpath" -o "$coverhtmlpath"
+echo "Report path: $coverhtmlpath"
+
+echo "> Testing code coverage..."
+coverage="$(go tool cover -func="$coverpath" | tail -n 1 |  grep -o -E "([0-9]*[.])?[0-9]+")"
+echo "Code coverage: ${coverage}%"
+if echo "${coverage} < ${min_coverage}" | bc -l | grep -q "^1$"; then
+  echo "Coverage too low, want: ${min_coverage}%, got: ${coverage}%"
+  echo "See report: ${coverhtmlpath}"
+  exit 1
+else
+  echo "Code coverage: ok (greater than ${min_coverage}%)"
+fi
