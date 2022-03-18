@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -o errexit
+set -o nounset
+set -o pipefail
+
+if ! command staticcheck; then
+  go install honnef.co/go/tools/cmd/staticcheck@latest
+fi
+
+PATH="$PATH:$GOPATH/bin"
+
+staticcheck ./...
+echo "done"
+
