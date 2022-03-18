@@ -64,7 +64,7 @@ func ExampleHook_context() {
 			return fmt.Sprintf("%s %d %s", context.S, context.N, msg), nil
 		})
 
-	logger.UpdateContext(updateContext(
+	_ = logger.UpdateContext(updateContext(
 		func(context Context) Context {
 			context.S = "A"
 			context.N = 1
@@ -83,12 +83,7 @@ func ExampleHook_contextUpdateTime() {
 	var context time.Time = time.Date(2021, 2, 1, 12, 30, 0, 0, time.UTC)
 
 	hookUpdateTime := func(v interface{}, msg string) (interface{}, string, error) {
-		context, ok := v.(time.Time)
-		if !ok {
-			return nil, "", fmt.Errorf("%T: not time type", v)
-		}
-
-		context = time.Date(2022, 2, 1, 12, 30, 0, 0, time.UTC)
+		context := time.Date(2022, 2, 1, 12, 30, 0, 0, time.UTC)
 		return context, msg, nil
 	}
 
@@ -136,11 +131,7 @@ func ExampleHook_multiFormatter() {
 		WithContext(context).
 		AddHook(hookWriteConsole)
 
-	logger.UpdateContext(func(v interface{}) (interface{}, error) {
-		context, ok := v.(string)
-		if !ok {
-			return nil, fmt.Errorf("%T: not string type", v)
-		}
+	_ = logger.UpdateContext(func(v interface{}) (interface{}, error) {
 		context = "mycontext"
 		return context, nil
 	})

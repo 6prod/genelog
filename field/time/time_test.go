@@ -15,14 +15,6 @@ type exampleWithTime struct {
 func ExampleWithTime() {
 	buf := bytes.Buffer{}
 
-	getContext := func(v interface{}) (exampleWithTime, error) {
-		exampleWithTime, ok := v.(exampleWithTime)
-		if !ok {
-			return exampleWithTime, fmt.Errorf("%T: not exampleWithTime type", v)
-		}
-		return exampleWithTime, nil
-	}
-
 	context := exampleWithTime{
 		NewWithTime(),
 	}
@@ -32,7 +24,6 @@ func ExampleWithTime() {
 		WithFormatter(json.JSON).
 		AddHook(HookUpdateTime)
 
-	context, _ = getContext(logger.Context())
 	logger.Println("mylog1")
 	logger.Println("mylog2")
 
