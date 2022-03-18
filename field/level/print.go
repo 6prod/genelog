@@ -6,112 +6,112 @@ import (
 	"github.com/6prod/genelog"
 )
 
-func Info(logger genelog.Logger, v ...interface{}) {
-	Output(logger, INFO, func(logger genelog.Logger) error {
+func Info(logger *genelog.Logger, v ...interface{}) {
+	Output(logger, INFO, func(logger *genelog.Logger) error {
 		logger.Print(v...)
 		return nil
 	})
 }
 
-func Infoln(logger genelog.Logger, v ...interface{}) {
-	Output(logger, INFO, func(logger genelog.Logger) error {
+func Infoln(logger *genelog.Logger, v ...interface{}) {
+	Output(logger, INFO, func(logger *genelog.Logger) error {
 		logger.Println(v...)
 		return nil
 	})
 }
 
-func Infof(logger genelog.Logger, format string, v ...interface{}) {
-	Output(logger, INFO, func(logger genelog.Logger) error {
+func Infof(logger *genelog.Logger, format string, v ...interface{}) {
+	Output(logger, INFO, func(logger *genelog.Logger) error {
 		logger.Printf(format, v...)
 		return nil
 	})
 }
 
-func Error(logger genelog.Logger, v ...interface{}) {
-	Output(logger, ERROR, func(logger genelog.Logger) error {
+func Error(logger *genelog.Logger, v ...interface{}) {
+	Output(logger, ERROR, func(logger *genelog.Logger) error {
 		logger.Print(v...)
 		return nil
 	})
 }
 
-func Errorln(logger genelog.Logger, v ...interface{}) {
-	Output(logger, ERROR, func(logger genelog.Logger) error {
+func Errorln(logger *genelog.Logger, v ...interface{}) {
+	Output(logger, ERROR, func(logger *genelog.Logger) error {
 		logger.Println(v...)
 		return nil
 	})
 }
 
-func Errorf(logger genelog.Logger, format string, v ...interface{}) {
-	Output(logger, ERROR, func(logger genelog.Logger) error {
+func Errorf(logger *genelog.Logger, format string, v ...interface{}) {
+	Output(logger, ERROR, func(logger *genelog.Logger) error {
 		logger.Printf(format, v...)
 		return nil
 	})
 }
 
-func Debug(logger genelog.Logger, v ...interface{}) {
-	Output(logger, DEBUG, func(logger genelog.Logger) error {
+func Debug(logger *genelog.Logger, v ...interface{}) {
+	Output(logger, DEBUG, func(logger *genelog.Logger) error {
 		logger.Print(v...)
 		return nil
 	})
 }
 
-func Debugln(logger genelog.Logger, v ...interface{}) {
-	Output(logger, DEBUG, func(logger genelog.Logger) error {
+func Debugln(logger *genelog.Logger, v ...interface{}) {
+	Output(logger, DEBUG, func(logger *genelog.Logger) error {
 		logger.Println(v...)
 		return nil
 	})
 }
 
-func Debugf(logger genelog.Logger, format string, v ...interface{}) {
-	Output(logger, DEBUG, func(logger genelog.Logger) error {
+func Debugf(logger *genelog.Logger, format string, v ...interface{}) {
+	Output(logger, DEBUG, func(logger *genelog.Logger) error {
 		logger.Printf(format, v...)
 		return nil
 	})
 }
 
-func Warning(logger genelog.Logger, v ...interface{}) {
-	Output(logger, WARNING, func(logger genelog.Logger) error {
+func Warning(logger *genelog.Logger, v ...interface{}) {
+	Output(logger, WARNING, func(logger *genelog.Logger) error {
 		logger.Print(v...)
 		return nil
 	})
 }
 
-func Warningln(logger genelog.Logger, v ...interface{}) {
-	Output(logger, WARNING, func(logger genelog.Logger) error {
+func Warningln(logger *genelog.Logger, v ...interface{}) {
+	Output(logger, WARNING, func(logger *genelog.Logger) error {
 		logger.Println(v...)
 		return nil
 	})
 }
 
-func Warningf(logger genelog.Logger, format string, v ...interface{}) {
-	Output(logger, WARNING, func(logger genelog.Logger) error {
+func Warningf(logger *genelog.Logger, format string, v ...interface{}) {
+	Output(logger, WARNING, func(logger *genelog.Logger) error {
 		logger.Printf(format, v...)
 		return nil
 	})
 }
 
-func Fatal(logger genelog.Logger, v ...interface{}) {
-	Output(logger, FATAL, func(logger genelog.Logger) error {
+func Fatal(logger *genelog.Logger, v ...interface{}) {
+	Output(logger, FATAL, func(logger *genelog.Logger) error {
 		logger.Print(v...)
 		return nil
 	})
 }
 
-func Fatalln(logger genelog.Logger, v ...interface{}) {
-	Output(logger, FATAL, func(logger genelog.Logger) error {
+func Fatalln(logger *genelog.Logger, v ...interface{}) {
+	Output(logger, FATAL, func(logger *genelog.Logger) error {
 		logger.Println(v...)
 		return nil
 	})
 }
 
-func Fatalf(logger genelog.Logger, format string, v ...interface{}) {
-	Output(logger, FATAL, func(logger genelog.Logger) error {
+func Fatalf(logger *genelog.Logger, format string, v ...interface{}) {
+	Output(logger, FATAL, func(logger *genelog.Logger) error {
 		logger.Printf(format, v...)
 		return nil
 	})
 }
 
-func Output(logger genelog.Logger, level Level, output func(logger genelog.Logger) error) error {
+func Output(logger *genelog.Logger, level Level, output func(logger *genelog.Logger) error) error {
 	context, ok := logger.Context().(Leveler)
 	if !ok {
 		return fmt.Errorf("logger: Leveler interface not implemented")

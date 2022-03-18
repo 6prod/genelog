@@ -26,19 +26,7 @@ type Update func(context interface{}) (newcontext interface{}, err error)
 // If err is ErrSkip, just return without writing anything
 type Hook func(context interface{}, msg string) (newcontext interface{}, newmsg string, err error)
 
-type Logger interface {
-	Print(v ...interface{})
-	Println(v ...interface{})
-	Printf(format string, v ...interface{})
-	WithContext(v interface{}) Logger
-	Context() interface{}
-	WithFormatter(f Format) Logger
-	AddHook(h Hook) Logger
-	UpdateContext(update Update) error
-	io.Writer
-}
-
-type logger struct {
+type Logger struct {
 	// mu synchronizes writes
 	mu *sync.Mutex
 	// w writes the logs somewhere
@@ -51,8 +39,8 @@ type logger struct {
 	hooks []Hook
 }
 
-func New(w io.Writer) Logger {
-	return &logger{
+func New(w io.Writer) *Logger {
+	return &Logger{
 		mu:    new(sync.Mutex),
 		w:     w,
 		hooks: make([]Hook, 0),
@@ -60,7 +48,7 @@ func New(w io.Writer) Logger {
 }
 
 // Print uses fmt.Print to write to the logger
-func (l *logger) Print(v ...interface{}) {
+func (l *Logger) Print(v ...interface{}) {
 	msg := fmt.Sprint(v...)
 	l.write(msg, func(w io.Writer, s string) {
 		fmt.Fprint(w, s)
@@ -68,7 +56,7 @@ func (l *logger) Print(v ...interface{}) {
 }
 
 // Println uses fmt.Println to write to the logger
-func (l *logger) Println(v ...interface{}) {
+func (l *Logger) Println(v ...interface{}) {
 	msg := fmt.Sprint(v...)
 	l.write(msg, func(w io.Writer, s string) {
 		fmt.Fprintln(w, s)
@@ -76,7 +64,7 @@ func (l *logger) Println(v ...interface{}) {
 }
 
 // Printf uses fmt.Printf to write to the logger
-func (l *logger) Printf(format string, v ...interface{}) {
+func (l *Logger) Printf(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
 	l.write(msg, func(w io.Writer, s string) {
 		fmt.Fprint(w, s)
@@ -84,19 +72,19 @@ func (l *logger) Printf(format string, v ...interface{}) {
 }
 
 // WithContext adds a context to the logger
-func (l logger) WithContext(v interface{}) Logger {
+func (l Logger) WithContext(v interface{}) *Logger {
 	logger := l
 	logger.context = v
 	return &logger
 }
 
 // Context returns the context
-func (l logger) Context() interface{} {
+func (l Logger) Context() interface{} {
 	return l.context
 }
 
 // WithFormatter adds a formatter function to the logger
-func (l logger) WithFormatter(f Format) Logger {
+func (l Logger) WithFormatter(f Format) *Logger {
 	logger := l
 	logger.format = f
 	return &logger
@@ -105,14 +93,14 @@ func (l logger) WithFormatter(f Format) Logger {
 // AddHook adds a hook function to the list of hooks of the logger.
 //
 // Hooks are called in the added order
-func (l logger) AddHook(h Hook) Logger {
+func (l Logger) AddHook(h Hook) *Logger {
 	logger := l
 	logger.hooks = append(logger.hooks, h)
 	return &logger
 }
 
 // UpdateContext updates the logger context with the update function
-func (l *logger) UpdateContext(update Update) error {
+func (l *Logger) UpdateContext(update Update) error {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 	context, err := update(l.context)
@@ -124,7 +112,7 @@ func (l *logger) UpdateContext(update Update) error {
 }
 
 // Write writes into the logger
-func (l *logger) Write(p []byte) (n int, err error) {
+func (l *Logger) Write(p []byte) (n int, err error) {
 	msg := bytes.NewBuffer(p).String()
 	l.write(msg, func(w io.Writer, s string) {
 		n, err = fmt.Fprint(w, s)
@@ -132,7 +120,7 @@ func (l *logger) Write(p []byte) (n int, err error) {
 	return
 }
 
-func (l *logger) write(msg string, fn func(w io.Writer, s string)) {
+func (l *Logger) write(msg string, fn func(w io.Writer, s string)) {
 	var err error
 	l.mu.Lock()
 	defer l.mu.Unlock()

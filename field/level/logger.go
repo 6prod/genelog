@@ -25,71 +25,71 @@ type LevelLogger interface {
 }
 
 type loggerWithLevel struct {
-	genelog.Logger
+	*genelog.Logger
 }
 
-func NewLevelLogger(logger genelog.Logger) loggerWithLevel {
+func NewLevelLogger(logger *genelog.Logger) loggerWithLevel {
 	return loggerWithLevel{
 		logger,
 	}
 }
 
 func (l loggerWithLevel) Info(v ...interface{}) {
-	Info(l, v...)
+	Info(l.Logger, v...)
 }
 
 func (l loggerWithLevel) Infoln(v ...interface{}) {
-	Infoln(l, v...)
+	Infoln(l.Logger, v...)
 }
 
 func (l loggerWithLevel) Infof(format string, v ...interface{}) {
-	Infof(l, format, v...)
+	Infof(l.Logger, format, v...)
 }
 
 func (l loggerWithLevel) Error(v ...interface{}) {
-	Error(l, v...)
+	Error(l.Logger, v...)
 }
 
 func (l loggerWithLevel) Errorln(v ...interface{}) {
-	Errorln(l, v...)
+	Errorln(l.Logger, v...)
 }
 
 func (l loggerWithLevel) Errorf(format string, v ...interface{}) {
-	Errorf(l, format, v...)
+	Errorf(l.Logger, format, v...)
 }
 
 func (l loggerWithLevel) Debug(v ...interface{}) {
-	Debug(l, v...)
+	Debug(l.Logger, v...)
 }
 
 func (l loggerWithLevel) Debugln(v ...interface{}) {
-	Debugln(l, v...)
+	Debugln(l.Logger, v...)
 }
 
 func (l loggerWithLevel) Debugf(format string, v ...interface{}) {
-	Debugf(l, format, v...)
+	Debugf(l.Logger, format, v...)
 }
 
 func (l loggerWithLevel) Warning(v ...interface{}) {
-	Warning(l, v...)
+	Warning(l.Logger, v...)
 }
 
 func (l loggerWithLevel) Warningln(v ...interface{}) {
-	Warningln(l, v...)
+	Warningln(l.Logger, v...)
 }
 
 func (l loggerWithLevel) Warningf(format string, v ...interface{}) {
-	Warningf(l, format, v...)
+	Warningf(l.Logger, format, v...)
 }
 
 func (l loggerWithLevel) Fatal(v ...interface{}) {
-	Fatal(l, v...)
+	Fatal(l.Logger, v...)
 }
 
 func (l loggerWithLevel) Fatalln(v ...interface{}) {
-	Fatalln(l, v...)
+	Fatalln(l.Logger, v...)
 }
 
 func (l loggerWithLevel) Fatalf(format string, v ...interface{}) {
-	Fatalf(l, format, v...)
+	Fatalf(l.Logger, format, v...)
 }
