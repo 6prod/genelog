@@ -37,8 +37,6 @@ const (
 	UNSET Level = iota
 	// DEBUG is the type to log DEBUG message
 	DEBUG
-	// OUT is the type to log INFO message
-	OUT
 	// INFO is the type to log INFO message
 	INFO
 	// WARNING is the type to log WARNING message
@@ -53,8 +51,6 @@ const (
 
 // Colors
 var (
-	// InfoColor defines the color of the INFO label
-	OutColor = color.New(color.Bold, color.FgHiGreen)
 	// ErrorColor defines the color of the ERROR label
 	ErrorColor = color.New(color.Bold, color.FgHiRed)
 	// InfoColor defines the color of the INFO label
@@ -74,7 +70,6 @@ var (
 var LevelString = map[Level]string{
 	UNSET:   "UNSET",
 	DEBUG:   "DEBUG",
-	OUT:     "OUT",
 	INFO:    "INFO",
 	WARNING: "WARNING",
 	ERROR:   "ERR",
@@ -85,7 +80,6 @@ var LevelString = map[Level]string{
 var LevelFromString = map[string]Level{
 	"unset":   UNSET,
 	"debug":   DEBUG,
-	"out":     OUT,
 	"info":    INFO,
 	"warning": WARNING,
 	"error":   ERROR,
@@ -94,7 +88,6 @@ var LevelFromString = map[string]Level{
 }
 
 var LevelColor = map[Level]string{
-	OUT:     OutColor.Sprint(LevelString[OUT]),
 	ERROR:   ErrorColor.Sprint(LevelString[ERROR]),
 	INFO:    InfoColor.Sprint(LevelString[INFO]),
 	DEBUG:   DebugColor.Sprint(LevelString[DEBUG]),
