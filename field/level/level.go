@@ -84,11 +84,13 @@ var LevelFromString = map[string]Level{
 }
 
 var LevelColor = map[Level]string{
-	ERROR:   ErrorColor.Sprint(LevelString[ERROR]),
-	INFO:    InfoColor.Sprint(LevelString[INFO]),
+	UNSET:   LevelString[UNSET],
 	DEBUG:   DebugColor.Sprint(LevelString[DEBUG]),
+	INFO:    InfoColor.Sprint(LevelString[INFO]),
 	WARNING: WarningColor.Sprint(LevelString[WARNING]),
+	ERROR:   ErrorColor.Sprint(LevelString[ERROR]),
 	FATAL:   FatalColor.Sprint(LevelString[FATAL]),
+	OFF:     LevelString[OFF],
 }
 
 func NewLevelFromString(s string) (Level, bool) {

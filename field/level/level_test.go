@@ -40,6 +40,44 @@ func TestIsActive(t *testing.T) {
 	}
 }
 
+type testLevelTestCase struct {
+	Description string
+	Test        func() error
+}
+
+var testLevelTestSuite = []testLevelTestCase{
+	{
+		Description: "convert from string for all levels",
+		Test: func() error {
+			want := len(LevelString)
+			got := len(LevelFromString)
+			if want != got {
+				return fmt.Errorf("want: %d, got: %d", want, got)
+			}
+			return nil
+		},
+	},
+	{
+		Description: "colors for all level",
+		Test: func() error {
+			want := len(LevelString)
+			got := len(LevelColor)
+			if want != got {
+				return fmt.Errorf("want: %d, got: %d", want, got)
+			}
+			return nil
+		},
+	},
+}
+
+func TestLevel(t *testing.T) {
+	for _, tc := range testLevelTestSuite {
+		if err := tc.Test(); err != nil {
+			t.Fatalf("%s: %s", tc.Description, err)
+		}
+	}
+}
+
 type exampleWithLevel struct {
 	*WithLevel
 }
