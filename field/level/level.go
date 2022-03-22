@@ -61,10 +61,6 @@ var (
 	WarningColor = color.New(color.Bold, color.FgHiYellow)
 	// FatalColor defines the color of the DEBUG label
 	FatalColor = color.New(color.Bold, color.FgHiRed)
-	// DurationColor defines the color of the duration label
-	DurationColor = color.New(color.Bold, color.FgHiBlack)
-	// JobColor defines the color of the job label
-	JobColor = color.New(color.Bold)
 )
 
 var LevelString = map[Level]string{
