@@ -51,7 +51,7 @@ func New(w io.Writer) *Logger {
 func (l *Logger) Print(v ...interface{}) {
 	msg := fmt.Sprint(v...)
 	l.write(msg, func(w io.Writer, s string) {
-		fmt.Fprint(w, s)
+		_, _ = io.WriteString(w, s)
 	})
 }
 
@@ -59,7 +59,8 @@ func (l *Logger) Print(v ...interface{}) {
 func (l *Logger) Println(v ...interface{}) {
 	msg := fmt.Sprint(v...)
 	l.write(msg, func(w io.Writer, s string) {
-		fmt.Fprintln(w, s)
+		_, _ = io.WriteString(w, s)
+		_, _ = io.WriteString(w, "\n")
 	})
 }
 
@@ -67,7 +68,7 @@ func (l *Logger) Println(v ...interface{}) {
 func (l *Logger) Printf(format string, v ...interface{}) {
 	msg := fmt.Sprintf(format, v...)
 	l.write(msg, func(w io.Writer, s string) {
-		fmt.Fprint(w, s)
+		_, _ = io.WriteString(w, s)
 	})
 }
 
