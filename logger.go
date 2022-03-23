@@ -28,7 +28,7 @@ type Hook func(context interface{}, msg string) (newcontext interface{}, newmsg 
 
 type Logger struct {
 	// mu synchronizes writes
-	mu *sync.Mutex
+	mu sync.Mutex
 	// w writes the logs somewhere
 	w io.Writer
 	// context adds metadata to logs
@@ -41,7 +41,6 @@ type Logger struct {
 
 func New(w io.Writer) *Logger {
 	return &Logger{
-		mu:    new(sync.Mutex),
 		w:     w,
 		hooks: make([]Hook, 0),
 	}
@@ -73,31 +72,31 @@ func (l *Logger) Printf(format string, v ...interface{}) {
 }
 
 // WithContext adds a context to the logger
-func (l Logger) WithContext(v interface{}) *Logger {
+func (l *Logger) WithContext(v interface{}) *Logger {
 	logger := l
 	logger.context = v
-	return &logger
+	return logger
 }
 
 // Context returns the context
-func (l Logger) Context() interface{} {
+func (l *Logger) Context() interface{} {
 	return l.context
 }
 
 // WithFormatter adds a formatter function to the logger
-func (l Logger) WithFormatter(f Format) *Logger {
+func (l *Logger) WithFormatter(f Format) *Logger {
 	logger := l
 	logger.format = f
-	return &logger
+	return logger
 }
 
 // AddHook adds a hook function to the list of hooks of the logger.
 //
 // Hooks are called in the added order
-func (l Logger) AddHook(h Hook) *Logger {
+func (l *Logger) AddHook(h Hook) *Logger {
 	logger := l
 	logger.hooks = append(logger.hooks, h)
-	return &logger
+	return logger
 }
 
 // UpdateContext updates the logger context with the update function
