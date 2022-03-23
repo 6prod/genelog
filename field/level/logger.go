@@ -1,15 +1,19 @@
 package level
 
-import "github.com/6prod/genelog"
+import (
+	"io"
+
+	"github.com/6prod/genelog"
+)
 
 type LevelLogger struct {
 	*genelog.Logger
 }
 
-func NewLevelLogger(logger *genelog.Logger) LevelLogger {
+func NewLevelLogger(w io.Writer) LevelLogger {
 	return LevelLogger{
-		logger,
-	}
+		genelog.New(w),
+	}.AddHook(HookLevelSkip)
 }
 
 func (l LevelLogger) Info(v ...interface{}) {
@@ -70,4 +74,19 @@ func (l LevelLogger) Fatalln(v ...interface{}) {
 
 func (l LevelLogger) Fatalf(format string, v ...interface{}) {
 	Fatalf(l.Logger, format, v...)
+}
+
+func (l LevelLogger) WithContext(v interface{}) LevelLogger {
+	logger := l.Logger.WithContext(v)
+	return LevelLogger{logger}
+}
+
+func (l LevelLogger) WithFormatter(f genelog.Format) LevelLogger {
+	logger := l.Logger.WithFormatter(f)
+	return LevelLogger{logger}
+}
+
+func (l LevelLogger) AddHook(h genelog.Hook) LevelLogger {
+	logger := l.Logger.AddHook(h)
+	return LevelLogger{logger}
 }
