@@ -112,9 +112,9 @@ func Fatalf(logger *genelog.Logger, format string, v ...interface{}) {
 }
 
 func Output(logger *genelog.Logger, level Level, output func(logger *genelog.Logger) error) error {
-	context, ok := logger.Context().(Leveler)
+	context, ok := GetLeveler(logger.Context())
 	if !ok {
-		return fmt.Errorf("logger: Leveler interface not implemented")
+		return fmt.Errorf("logger: %w", ErrLevelerNotImplemented)
 	}
 
 	if !IsActive(context.LevelMin(), level) {

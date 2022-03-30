@@ -2,6 +2,7 @@ package level
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -61,6 +62,10 @@ var (
 	WarningColor = color.New(color.Bold, color.FgHiYellow)
 	// FatalColor defines the color of the DEBUG label
 	FatalColor = color.New(color.Bold, color.FgHiRed)
+)
+
+var (
+	ErrLevelerNotImplemented = errors.New("Leveler interface not implemented")
 )
 
 var LevelString = map[Level]string{
@@ -139,6 +144,16 @@ type Leveler interface {
 	LevelMin() Level
 	Level() Level
 	LevelSet(Level)
+}
+
+// GetLeveler converts v into Leveler.
+// Returns false if not possible.
+func GetLeveler(v interface{}) (Leveler, bool) {
+	leveler, ok := v.(Leveler)
+	if !ok {
+		return nil, false
+	}
+	return leveler, true
 }
 
 func HookLevelSkip(v interface{}, msg string) (interface{}, string, error) {
