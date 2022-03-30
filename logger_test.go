@@ -221,3 +221,28 @@ func BenchmarkZerolog(b *testing.B) {
 	}
 	//b.FailNow()
 }
+
+func TestLogger_WithContext(t *testing.T) {
+	buf := bytes.Buffer{}
+
+	logger := New(&buf).
+		WithFormatter(func(v interface{}, msg string) (string, error) {
+			return fmt.Sprintf("%v: %s", v, msg), nil
+		})
+
+	logger1 := logger.WithContext(3)
+	logger1.Println("logger 1 msg1")
+
+	logger2 := logger.WithContext("string")
+	logger2.Println("logger2 msg1")
+
+	logger1.Println("logger 1 msg2")
+
+	want := `3: logger 1 msg1
+string: logger2 msg1
+3: logger 1 msg2
+`
+	if got := buf.String(); got != want {
+		t.Fatalf("\nwant:\n%s\ngot:\n%s", want, got)
+	}
+}

@@ -46,6 +46,15 @@ func New(w io.Writer) *Logger {
 	}
 }
 
+func (l *Logger) clone() *Logger {
+	logger := New(l.w)
+	logger.context = l.context
+	logger.format = l.format
+	logger.hooks = l.hooks
+
+	return logger
+}
+
 // Print uses fmt.Print to write to the logger
 func (l *Logger) Print(v ...interface{}) {
 	msg := fmt.Sprint(v...)
@@ -73,7 +82,7 @@ func (l *Logger) Printf(format string, v ...interface{}) {
 
 // WithContext adds a context to the logger
 func (l *Logger) WithContext(v interface{}) *Logger {
-	logger := l
+	logger := l.clone()
 	logger.context = v
 	return logger
 }
@@ -85,7 +94,7 @@ func (l *Logger) Context() interface{} {
 
 // WithFormatter adds a formatter function to the logger
 func (l *Logger) WithFormatter(f Format) *Logger {
-	logger := l
+	logger := l.clone()
 	logger.format = f
 	return logger
 }
@@ -94,7 +103,7 @@ func (l *Logger) WithFormatter(f Format) *Logger {
 //
 // Hooks are called in the added order
 func (l *Logger) AddHook(h Hook) *Logger {
-	logger := l
+	logger := l.clone()
 	logger.hooks = append(logger.hooks, h)
 	return logger
 }
