@@ -19,13 +19,7 @@ func ExampleLevelLogger() {
 		WithContext(context).
 		WithFormatter(json.JSON)
 
-	context = func() exampleWithLevel {
-		c, _ := logger.Context().(exampleWithLevel)
-		return c
-	}()
-
-	logger = logger.WithContext(context)
-	logger.WithFormatter(func(v interface{}, msg string) (string, error) {
+	logger = logger.WithFormatter(func(v interface{}, msg string) (string, error) {
 		context, _ := v.(exampleWithLevel)
 		return fmt.Sprintf("%s: %s\n", context.Level(), msg), nil
 	})
