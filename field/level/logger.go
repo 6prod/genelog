@@ -1,6 +1,7 @@
 package level
 
 import (
+	"fmt"
 	"io"
 
 	"github.com/6prod/genelog"
@@ -76,6 +77,23 @@ func (l LevelLogger) Fatalf(format string, v ...interface{}) {
 	Fatalf(l.Logger, format, v...)
 }
 
+// Writer returns a Writer set to level
+func (l LevelLogger) Writer(level Level) io.Writer {
+	context, ok := GetLeveler(l.Context())
+	if !ok {
+		return writerErr{fmt.Errorf("logger: %w", ErrLevelerNotImplemented)}
+	}
+
+	// discard inactive levels
+	if !IsActive(context.LevelMin(), level) {
+		return io.Discard
+	}
+
+	// return writer set at level
+	context.LevelSet(level)
+	return l.WithContext(context)
+}
+
 func (l LevelLogger) WithContext(v interface{}) LevelLogger {
 	logger := l.Logger.WithContext(v)
 	return LevelLogger{logger}
@@ -89,4 +107,13 @@ func (l LevelLogger) WithFormatter(f genelog.Format) LevelLogger {
 func (l LevelLogger) AddHook(h genelog.Hook) LevelLogger {
 	logger := l.Logger.AddHook(h)
 	return LevelLogger{logger}
+}
+
+// writerErr is an io.Writer that always returns an error
+type writerErr struct {
+	err error
+}
+
+func (w writerErr) Write(p []byte) (int, error) {
+	return 0, w.err
 }

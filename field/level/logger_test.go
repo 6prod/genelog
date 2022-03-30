@@ -3,6 +3,7 @@ package level
 import (
 	"bytes"
 	"fmt"
+	"io"
 
 	"github.com/6prod/genelog/format/json"
 )
@@ -45,4 +46,33 @@ func ExampleLevelLogger() {
 	// WARNING: mylog
 	// ERR: mylog
 	// FATAL: mylog
+}
+
+func ExampleLevelLogger_Writer() {
+	buf := bytes.Buffer{}
+
+	var context = struct {
+		*WithLevel
+	}{
+		NewWithLevel(INFO),
+	}
+
+	logger := NewLevelLogger(&buf).
+		WithContext(context).
+		WithFormatter(json.JSON)
+
+	w := logger.Writer(WARNING)
+	_, _ = io.WriteString(w, "mylog1")
+	_, _ = io.WriteString(w, "mylog2")
+
+	w = logger.Writer(DEBUG)
+	if _, err := io.WriteString(w, "mylog3"); err != nil {
+		buf.WriteString(err.Error())
+	}
+	_, _ = io.WriteString(w, "mylog4")
+
+	fmt.Print(buf.String())
+	// Output:
+	// {"context":{"level":"WARNING"},"message":"mylog1"}
+	// {"context":{"level":"WARNING"},"message":"mylog2"}
 }
