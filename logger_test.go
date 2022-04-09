@@ -246,3 +246,27 @@ string: logger2 msg1
 		t.Fatalf("\nwant:\n%s\ngot:\n%s", want, got)
 	}
 }
+
+func TestLogger_Writer(t *testing.T) {
+	buf := bytes.Buffer{}
+
+	prefix := "prefix "
+	input := "mylog1"
+
+	logger := New(&buf).
+		WithFormatter(func(v interface{}, msg string) (string, error) {
+			return fmt.Sprintf("%s%s", prefix, msg), nil
+		})
+
+	if n, err := logger.Write([]byte(input)); err != nil {
+		t.Fatal(err)
+	} else if want := len(input); want != n {
+		t.Fatalf("want=%d, got=%d", want, n)
+	}
+
+	if n, err := io.Copy(logger, bytes.NewBufferString(input)); err != nil {
+		t.Fatal(err)
+	} else if want := len(input); int64(want) != n {
+		t.Fatalf("want=%d, got=%d", want, n)
+	}
+}

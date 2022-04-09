@@ -122,11 +122,11 @@ func (l *Logger) UpdateContext(update Update) error {
 
 // Write writes into the logger
 func (l *Logger) Write(p []byte) (n int, err error) {
-	msg := bytes.NewBuffer(p).String()
-	l.write(msg, func(w io.Writer, s string) {
-		n, err = fmt.Fprint(w, s)
+	buf := bytes.NewBuffer(p)
+	l.write(buf.String(), func(w io.Writer, s string) {
+		_, err = fmt.Fprint(w, s)
 	})
-	return
+	return buf.Len(), err
 }
 
 func (l *Logger) write(msg string, fn func(w io.Writer, s string)) {
