@@ -69,13 +69,13 @@ var (
 )
 
 var LevelString = map[Level]string{
-	UNSET:   "UNSET",
-	DEBUG:   "DEBUG",
-	INFO:    "INFO",
-	WARNING: "WARNING",
-	ERROR:   "ERR",
-	FATAL:   "FATAL",
-	OFF:     "OFF",
+	UNSET:   "unset",
+	DEBUG:   "debug",
+	INFO:    "info",
+	WARNING: "warning",
+	ERROR:   "error",
+	FATAL:   "fatal",
+	OFF:     "off",
 }
 
 var LevelFromString = map[string]Level{

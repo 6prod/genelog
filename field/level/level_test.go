@@ -118,5 +118,5 @@ func ExampleWithLevel() {
 	fmt.Println(&buf)
 
 	// Output:
-	// {"context":{"level":"ERR"},"message":"mylog"}
+	// {"context":{"level":"error"},"message":"mylog"}
 }

@@ -37,9 +37,9 @@ func ExampleLevelLogger() {
 
 	fmt.Print(buf.String())
 	// Output:
-	// WARNING: mylog
-	// ERR: mylog
-	// FATAL: mylog
+	// warning: mylog
+	// error: mylog
+	// fatal: mylog
 }
 
 func ExampleLevelLogger_Writer() {
@@ -67,6 +67,6 @@ func ExampleLevelLogger_Writer() {
 
 	fmt.Print(buf.String())
 	// Output:
-	// {"context":{"level":"WARNING"},"message":"mylog1"}
-	// {"context":{"level":"WARNING"},"message":"mylog2"}
+	// {"context":{"level":"warning"},"message":"mylog1"}
+	// {"context":{"level":"warning"},"message":"mylog2"}
 }
