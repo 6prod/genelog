@@ -10,6 +10,13 @@ type WithTime struct {
 	time time.Time
 }
 
+// withTimeJSON is an helper structure
+// to decode json from WithTime with
+// private attributes
+type withTimeJSON struct {
+	Time time.Time `json:"time"`
+}
+
 func NewWithTime() *WithTime {
 	return &WithTime{}
 }
@@ -23,11 +30,20 @@ func (w *WithTime) TimeSet(t time.Time) {
 }
 
 func (w WithTime) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Time time.Time `json:"time"`
-	}{
-		Time: w.time,
-	})
+	return json.Marshal(withTimeJSON{Time: w.time})
+}
+
+func (w *WithTime) UnmarshalJSON(b []byte) error {
+	var withTime withTimeJSON
+	if err := json.Unmarshal(b, &withTime); err != nil {
+		return err
+	}
+
+	*w = WithTime{
+		time: withTime.Time,
+	}
+
+	return nil
 }
 
 type Timer interface {
