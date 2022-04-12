@@ -270,3 +270,21 @@ func TestLogger_Writer(t *testing.T) {
 		t.Fatalf("want=%d, got=%d", want, n)
 	}
 }
+
+func ExampleLogger_SetOutput() {
+	logger := New(io.Discard).
+		WithFormatter(func(v interface{}, msg string) (string, error) {
+			return msg, nil
+		})
+
+	logger.Println("mylog1")
+
+	buf := bytes.Buffer{}
+	logger.SetOutput(&buf)
+	logger.Println("mylog2")
+
+	fmt.Print(&buf)
+
+	// Output:
+	// mylog2
+}

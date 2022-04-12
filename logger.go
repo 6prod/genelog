@@ -158,3 +158,10 @@ func (l *Logger) write(msg string, fn func(w io.Writer, s string)) {
 	// Process output
 	fn(l.w, msg)
 }
+
+// SetOutput changes the output writer of the logger
+func (l *Logger) SetOutput(w io.Writer) {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	l.w = w
+}
