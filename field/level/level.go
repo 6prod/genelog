@@ -140,9 +140,13 @@ func (w WithLevel) MarshalJSON() ([]byte, error) {
 	})
 }
 
+// Leveler is the interface to access the level field
 type Leveler interface {
+	// LevelMin returns the minimum level to print
 	LevelMin() Level
+	// Level returns the current level
 	Level() Level
+	// LevelSet changes the level
 	LevelSet(Level)
 }
 
