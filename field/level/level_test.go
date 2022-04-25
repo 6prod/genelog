@@ -83,8 +83,10 @@ type exampleWithLevel struct {
 }
 
 func ExampleWithLevel() {
+	// output buffer
 	buf := bytes.Buffer{}
 
+	// simply converts v into exampleWithLevel
 	getContext := func(v interface{}) (exampleWithLevel, error) {
 		exampleWithLevel, ok := v.(exampleWithLevel)
 		if !ok {
@@ -103,14 +105,14 @@ func ExampleWithLevel() {
 		AddHook(HookLevelSkip)
 
 	context, _ = getContext(logger.Context())
-	context.WithLevel.LevelSet(ERROR)
+	context.LevelSet(ERROR)
 	logger = logger.WithContext(context)
 
 	logger.Println("mylog")
 
 	// not displayed because min level set to info
 	context, _ = getContext(logger.Context())
-	context.WithLevel.LevelSet(DEBUG)
+	context.LevelSet(DEBUG)
 	logger = logger.WithContext(context)
 
 	logger.Println("mylog")
