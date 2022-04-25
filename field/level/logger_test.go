@@ -55,18 +55,12 @@ func ExampleLevelLogger_Writer() {
 		WithContext(context).
 		WithFormatter(json.JSON)
 
-	w := logger.Writer(WARNING)
-	_, _ = io.WriteString(w, "mylog1")
-	_, _ = io.WriteString(w, "mylog2")
-
-	w = logger.Writer(DEBUG)
-	if _, err := io.WriteString(w, "mylog3"); err != nil {
-		buf.WriteString(err.Error())
-	}
-	_, _ = io.WriteString(w, "mylog4")
+	w1 := logger.Writer(WARNING)
+	_, _ = io.WriteString(w1, "w1")
+	_, _ = io.WriteString(w1, "w1")
 
 	fmt.Print(buf.String())
 	// Output:
-	// {"context":{"level":"warning"},"message":"mylog1"}
-	// {"context":{"level":"warning"},"message":"mylog2"}
+	// {"context":{"level":"warning"},"message":"w1"}
+	// {"context":{"level":"warning"},"message":"w1"}
 }

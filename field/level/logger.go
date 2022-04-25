@@ -78,6 +78,16 @@ func (l LevelLogger) Fatalf(format string, v ...interface{}) {
 }
 
 // Writer returns a Writer set to level
+//
+// Multiple writers can't be made because another
+// writer will overwrite the level of the first one
+// by updating the logger context.
+//
+// In order to have multiple writers, deep copy the context
+// for each of them to not share the WithLevel pointer, then
+// inject the context into the logger:
+//
+// w := logger.WithContext(context).Writer(level)
 func (l LevelLogger) Writer(level Level) io.Writer {
 	context, ok := GetLeveler(l.Context())
 	if !ok {
