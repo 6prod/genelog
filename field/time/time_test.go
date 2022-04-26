@@ -21,8 +21,9 @@ type exampleWithTime struct {
 func ExampleWithTime() {
 	buf := bytes.Buffer{}
 
+	now := time.Date(2022, time.April, 4, 26, 0, 0, 0, time.UTC)
 	context := exampleWithTime{
-		NewWithTime(),
+		NewWithTime(now),
 	}
 
 	logger := genelog.New(&buf).
@@ -39,8 +40,9 @@ func ExampleWithTime() {
 func TestWithType(t *testing.T) {
 	buf := bytes.Buffer{}
 
+	now := time.Date(2022, time.April, 4, 26, 0, 0, 0, time.UTC)
 	context := exampleWithTime{
-		NewWithTime(),
+		NewWithTime(now),
 	}
 
 	logger := genelog.New(&buf).
@@ -105,8 +107,9 @@ func TestWithType(t *testing.T) {
 func TestWithType_UnmarshalJSON(t *testing.T) {
 	buf := bytes.Buffer{}
 
+	now := time.Date(2022, time.April, 4, 26, 0, 0, 0, time.UTC)
 	context := exampleWithTime{
-		NewWithTime(),
+		NewWithTime(now),
 	}
 
 	logger := genelog.New(&buf).
@@ -118,7 +121,9 @@ func TestWithType_UnmarshalJSON(t *testing.T) {
 		Message string
 	}{
 		// init pointer
-		Context: exampleWithTime{NewWithTime()},
+		Context: exampleWithTime{
+			NewWithTime(time.Time{}),
+		},
 	}
 
 	want := "mylog"
@@ -135,7 +140,7 @@ func TestWithType_UnmarshalJSON(t *testing.T) {
 		gotTime := jsonContext.Context.Time()
 		msg := jsonContext.Message
 
-		if !gotTime.Equal(time.Time{}) {
+		if !gotTime.Equal(now) {
 			t.Fatalf("%s: expecting time zero", gotTime)
 		}
 

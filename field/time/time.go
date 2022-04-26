@@ -17,8 +17,10 @@ type withTimeJSON struct {
 	Time time.Time `json:"time"`
 }
 
-func NewWithTime() *WithTime {
-	return &WithTime{}
+func NewWithTime(t time.Time) *WithTime {
+	return &WithTime{
+		time: t,
+	}
 }
 
 func (w WithTime) Time() time.Time {
