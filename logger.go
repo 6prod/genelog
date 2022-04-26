@@ -1,6 +1,7 @@
 package genelog
 
 import (
+	"bufio"
 	"bytes"
 	"errors"
 	"fmt"
@@ -123,10 +124,24 @@ func (l *Logger) UpdateContext(update Update) error {
 // Write writes into the logger
 func (l *Logger) Write(p []byte) (n int, err error) {
 	buf := bytes.NewBuffer(p)
-	l.write(buf.String(), func(w io.Writer, s string) {
-		_, err = fmt.Fprint(w, s)
-	})
-	return buf.Len(), err
+	size := buf.Len()
+
+	scanner := bufio.NewScanner(buf)
+
+	for scanner.Scan() {
+		l.write(scanner.Text(), func(w io.Writer, s string) {
+			_, err = fmt.Fprintln(w, s)
+		})
+	}
+
+	writen := size - buf.Len()
+
+	err = scanner.Err()
+	if err != nil {
+		return writen, err
+	}
+
+	return writen, err
 }
 
 func (l *Logger) write(msg string, fn func(w io.Writer, s string)) {
