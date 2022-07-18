@@ -134,14 +134,7 @@ func (l *Logger) Write(p []byte) (n int, err error) {
 		})
 	}
 
-	writen := size - buf.Len()
-
-	err = scanner.Err()
-	if err != nil {
-		return writen, err
-	}
-
-	return writen, err
+	return size - buf.Len(), scanner.Err()
 }
 
 func (l *Logger) write(msg string, fn func(w io.Writer, s string)) {
