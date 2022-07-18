@@ -2,6 +2,7 @@ package time
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 )
@@ -36,14 +37,16 @@ func (w WithTime) MarshalJSON() ([]byte, error) {
 }
 
 func (w *WithTime) UnmarshalJSON(b []byte) error {
+	if w == nil {
+		return errors.New("logger: json decoder: WithTime is nil")
+	}
+
 	var withTime withTimeJSON
 	if err := json.Unmarshal(b, &withTime); err != nil {
 		return err
 	}
 
-	*w = WithTime{
-		time: withTime.Time,
-	}
+	w.time = withTime.Time
 
 	return nil
 }
