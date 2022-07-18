@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+set -o nounset
+set -o errexit
+set -o pipefail
+
+# Inputs
+declare -r UNIT_TEST="${UNIT_TEST:=0}" ## Set to 1 for unit testing
+
+# Configuration
+declare -r PACKAGE="github.com/6prod/genelog"
+declare -x -r GO_PROXY="proxy.golang.org"
+
+# Declare functions with side-effects
+declare git_describe_fn="git_describe_cmd"
+declare git_release_fn="git_release_cmd"
+declare go_release_fn="go_release_cmd"
+
+if [ "$UNIT_TEST" -eq 1 ]; then
+  git_describe_fn="git_describe_test"
+  git_release_fn="git_release_test"
+  go_release_fn="go_release_test"
+fi
+
+## Make them read-only
+declare -r git_describe_fn
+declare -r go_release_fn
+
+# Functions
+function git_describe_cmd() {
+  git describe --tags --abbrev=0
+}
+
+function git_describe_test() {
+  echo "v1.0.14"
+}
+
+function go_release_cmd() {
+  local package="$1"
+  go list -m "$package"
+}
+
+function go_release_test() {
+  local package="$1"
+  echo "$package released"
+}
+
+function git_release_cmd() {
+  local tag="$1"
+
+  git tag "$tag"
+  git push
+  git push --tags
+}
+
+function git_release_test() {
+  local tag="$1"
+  echo "git release $tag"
+}
+
+function tag_next() {
+  local tag="$1"
+  
+  declare -i minor="${tag##*.}"
+  minor=$((minor+1))
+  
+  declare -r prefix="${tag%.*}"
+  declare -r next="${prefix}.${minor}"
+
+  echo "$next"
+}
+
+# Main
+function main() {
+  declare -r tag_current="$(${git_describe_fn})"
+  declare -r tag_release="$(tag_next "$tag_current")"
+
+  ${git_release_fn} "$tag_release"
+
+  ${go_release_fn} "${PACKAGE}@${tag_release}" 
+}
+
+main

@@ -19,6 +19,13 @@ jobs:
     job:
       - {from: [ci/lint/vet, ci/lint/staticcheck, ci/lint/golangci-lint]}
 
+  ci/release:
+    description: "Version and push this package"
+
   default:
     job:
       - {from: [lint], to: [ci/unit]}
+
+  production:
+    job:
+      - {from: [default], to: [ci/release] }
