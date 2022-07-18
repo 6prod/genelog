@@ -25,6 +25,7 @@ package json
 import (
 	"bytes"
 	"encoding/json"
+	"strings"
 )
 
 // FormatJSON format into JSON using the structure
@@ -43,5 +44,7 @@ func JSON(v interface{}, msg string) (string, error) {
 	if err := enc.Encode(m); err != nil {
 		return "", err
 	}
-	return buf.String(), nil
+
+	// Trim the last newline character added by json.Encoder
+	return strings.TrimSuffix(buf.String(), "\n"), nil
 }
